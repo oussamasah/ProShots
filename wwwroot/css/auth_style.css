@@ -1,0 +1,79 @@
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+
+}
+
+body {
+    margin-bottom: 60px;
+    font-family: "Bad Script",sans-serif;
+    background: url('../img/auth_bg.webp');
+    height: 93vh !important;
+    background-size: cover;
+    background-repeat: no-repeat;
+    color: #EEEEEE;
+}
+h1, h2, h3, h4, h5, h6 {
+    font-family: "Great Vibes",sans-serif;
+    color: #B1B493
+}
+a, .nav-link {
+    text-decoration: none;
+    color: #B1B493
+}
+    a:hover, .nav-link:hover {
+        text-decoration: none;
+        color: #B1B493
+    }
+.btn {
+    background: #4F8A8B;
+    border-color: #4F8A8B;
+    box-shadow: none;
+}
+.btn:hover {
+    background: #B1B493;
+    border-color: #B1B493;
+}
+/*tab navigation*/
+.form-floating label {
+    color: #41464b;
+}
+.card {
+    background: rgb(57 62 70 / 74%)
+}
+.login-logout-card .card-header {
+    padding: 0px 0px 12px 0px;
+}
+
+.login-logout-card ul.nav-tabs {
+    margin: 0px 0px -12px 0px;
+}
+
+.login-logout-card li.nav-item {
+    width: 50%;
+}
+
+.login-logout-card a.nav-link {
+    font-size: 1rem;
+  
+    text-align: center;
+    padding: 1rem;
+}
+
+.login-logout-card .card-body {
+    padding: 10px 20px;
+}
