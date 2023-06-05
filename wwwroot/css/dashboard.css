@@ -22,6 +22,7 @@ body {
     font-family: "Bad Script",sans-serif;
     background: #222831;
     color: #EEEEEE;
+    height:93vh;
 }
 h1, h2, h3, h4, h5, h6 {
     font-family: "Great Vibes",sans-serif;
@@ -82,8 +83,7 @@ a, .nav-link {
     width: 15%;
     height: 100vh;
     background: #b1b493;
-
-    color :white;
+    color: #222831;
 }
 .wrapper{
    
@@ -101,17 +101,23 @@ a, .nav-link {
     padding: 5px;
     font-size: 30px;
     font-weight: bold;
-    color: #222831;
+    color:white;
     text-align: center;
 }
 .nav-link, .nav-link.active, .nav-item, .nav-item, .nav-link:hover, .nav-link:active:hover, .nav-link:focus, .nav-link:focus:hover, .nav-link:active, .nav-link.active:hover {
     border: none;
-    color: white;
     border-radius: none;
     border-radius: 0;
     margin-bottom:0;
 }
 
+a.nav-link, a.nav-link {
+
+    color: #222831 !important;
+    font-size:22px;
+    font-weight:bold;
+
+}
 a.nav-link.active, a.nav-link:hover {
     background: #222831 !important;
     color: white !important;
@@ -120,4 +126,29 @@ a.nav-link.active, a.nav-link:hover {
 .title-label {
     display:block;
     color:grey;
+}
+.profile {
+    width: 150px;
+    height: 150px;
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+    display: block;
+    margin: 0 auto;
+    border-radius: 50%;
+    border: 2px solid #4f8a8b;
+    padding: 0px;
+    position: relative;
+}
+.profile-name {
+    text-transform:uppercase;
+    color:black;
+    text-align:center;
+    font-weight:bold;
+    
+}
+.separator {
+    border-top: 1px solid #4F8A8B;
+    padding: 5px;
+    border-bottom: 1px solid #4F8A8B;
+    line-height: 20px;
 }

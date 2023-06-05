@@ -33,13 +33,14 @@ namespace ProShots.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<User> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly IWebHostEnvironment _env;
 
         public RegisterModel(
             UserManager<User> userManager,
             IUserStore<User> userStore,
             SignInManager<User> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender, IWebHostEnvironment env)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -47,6 +48,7 @@ namespace ProShots.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _env= env;
         }
 
         /// <summary>
@@ -98,7 +100,7 @@ namespace ProShots.Areas.Identity.Pages.Account
            
             [Required]
             [Display(Name = "Photo")]
-            public string Photo { get; set; }
+            public IFormFile Photo { get; set; }
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -127,7 +129,7 @@ namespace ProShots.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
-        public async Task<IActionResult> OnPostAsync(IFormFile file,string returnUrl = null)
+        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
@@ -137,29 +139,19 @@ namespace ProShots.Areas.Identity.Pages.Account
                 user.FirstName = Input.FirstName;
                 user.LastName = Input.LastName;
 
-                string wwwRootPath = "~/profiles";
-                if (file != null)
-                {
-                    string fileName = Guid.NewGuid().ToString();
-                    var uploads = Path.Combine(wwwRootPath, @"profiles");
-                    var extension = Path.GetExtension(file.FileName);
+                string wwwRootPath = _env.WebRootPath;
 
-                    if (Input.Photo != null)
-                    {
-                        var oldImagePath = Path.Combine(wwwRootPath, Input.Photo.TrimStart('\\'));
-                    }
-
-                    using (var fileStreams = new FileStream(Path.Combine(uploads, fileName + extension), FileMode.Create))
-                    {
-                        file.CopyTo(fileStreams);
-                    }
-                    Input.Photo = @"\profiles\" + fileName + extension;
-                }
-                else
+                string fileName = Path.GetFileNameWithoutExtension(Input.Photo.FileName);
+                string extension = Path.GetExtension(Input.Photo.FileName);
+                 fileName = fileName + DateTime.Now.ToString("yymmssfff") + extension;
+                string path = Path.Combine(wwwRootPath + "/profiles/", fileName);
+                using (var fileStream = new FileStream(path, FileMode.Create))
                 {
-                    Input.Photo = @"\profiles\default.png";
+                    await Input.Photo.CopyToAsync(fileStream);
                 }
-                user.Photo = Input.Photo;
+
+                user.Photo = fileName;
+
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);

@@ -12,8 +12,8 @@ using ProShots.Data;
 namespace ProShots.Migrations
 {
     [DbContext(typeof(ProShotsContext))]
-    [Migration("20230605155347_Initial migration")]
-    partial class Initialmigration
+    [Migration("20230605172158_Initial Migration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

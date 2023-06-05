@@ -2,6 +2,8 @@
 @using ProShots.Areas.Identity.Data
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
+@{ var user= UserManager.Users.FirstOrDefault(m=>m.UserName==User.Identity.Name);
+}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,17 +21,19 @@
 
     <div class="dashboard">
         <div class="sidebar">
-            <a class="logo mb-5" asp-area="" asp-controller="Home" asp-action="Index">ProShots</a>
-            <div class="profile mb-2">
-                <img src="" alt="" />
-                <span> @UserManager.GetUserName(User)</span>
+            <a class="logo mb-1" asp-area="" asp-controller="Home" asp-action="Index">ProShots</a>
+            <div class=" mb-3">
+                <div style="background:url('/profiles/@(user.Photo)')" alt="@(user.FirstName) @(user.LastName)" class="profile mb-2" ></div>
+                <div class="profile-name"> @(user.FirstName) @(user.LastName)</div>
             </div>
-            <p class="title-label mb-2 text-center">Navigations</p>
+            <div class="separator text-center mb-3">
+                Navigation
+            </div>
             <ul class="nav nav-tabs">
-                <li class="w-100 nav-item">
+                <li class="w-100 nav-item mb-1">
                     <a class="w-100 nav-link" asp-area="" asp-controller="Dashboard" asp-action="Index" title="Dashboard"><i class="bi bi-speedometer me-2"></i> Dashboard</a>
                 </li>
-                <li class="w-100 nav-item">
+                <li class="w-100 nav-item mb-1">
                     <a class="w-100 nav-link" asp-area="" asp-controller="Dashboard" asp-action="Media" title="Media"><i class="bi bi-collection-play-fill me-2"></i> Media Gallery</a>
                 </li>
 
