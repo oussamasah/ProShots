@@ -1,0 +1,100 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+
+    Layout = "/Views/Shared/_DashLayout.cshtml";
+
+}
+@section Styles{
+    <style>
+        .bYUPen {
+
+            background: none!important;
+        }
+
+        .eqwZOE {
+            background: rgb(42 46 55) !important;
+
+        }
+
+        .cGhpJi:hover {
+            background: rgb(255 255 255) !important;
+        }
+
+        .cGhpJi {
+            background: rgb(79 138 139) !important;
+        }
+        .gloAWZ {
+            color: rgb(255 255 255) !important;
+    
+        }
+        .FIE_root :not(button) > svg:not([color]), #SfxPopper :not(button) > svg:not([color]) {
+            color: rgb(255 255 255) !important;
+        }
+
+        .konvajs-content canvas:first-child {
+            background: #2a2e37 !important;
+        }
+
+        .cGhpJi[aria-selected="true"] * {
+            color: rgb(42 46 55) !important;
+        }
+
+        .cGhpJi[aria-selected="true"] * {
+            color: rgb(177 180 147) !important;
+        }
+        .cGhpJi:hover {
+            background: rgb(42 46 55) !important;
+        }
+
+        .dfflPR {
+            background-color: rgb(177 180 147) !important;
+            color: rgb(42 46 55) !important;
+       
+        }
+
+        .fuFkZp {
+            color: black;
+            !important;
+        }
+    </style>
+}
+<div class="row">
+    <div class="d-flex justify-content-between align-items-center">
+        <h1 class="mt-3 mb-3">Edit Image </h1>
+        <a asp-controller="Gallery" role="button" asp-action="Details" asp-route-id="@Model.Id" class="btn retrun"><i class="bi-arrow-left me-2"></i>Return</a>
+    </div>
+    <div id="image-editor" style="height: 75vh;"></div>
+</div>
+@section Scripts{
+    <script src="https://scaleflex.cloudimg.io/v7/plugins/filerobot-image-editor/latest/filerobot-image-editor.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            let hostname = "http://"+ location.hostname+":5100";
+        var path = hostname+"/gallery/@Model.Path";
+
+            const container = document.getElementById("image-editor");
+            const config = {
+                source: encodeURI(path)
+            };
+            const ImageEditor = new window.FilerobotImageEditor(container, config);
+
+            ImageEditor.render({
+                // additional config provided while rendering
+                observePluginContainerSize: true,
+                onSave: (imageInfo, designState) => {
+                    const tmpLink = document.createElement("a");
+                    tmpLink.download = imageInfo.fullName;
+                    tmpLink.href = imageInfo.imageBase64;
+                    tmpLink.style = "position: absolute; z-index: -111; visibility: none;";
+                    document.body.appendChild(tmpLink);
+                    tmpLink.click();
+                    document.body.removeChild(tmpLink);
+                }
+            });
+
+        })
+
+    </script>
+}

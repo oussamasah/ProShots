@@ -10,6 +10,18 @@
         "font/fonts/bootstrap-icons.woff",
         "font/fonts/bootstrap-icons.woff2"
       ]
+    },
+    {
+      "library": "particlesjs@2.2.3",
+      "destination": "wwwroot/lib/particlesjs/"
+    },
+    {
+      "library": "particles.js@2.0.0",
+      "destination": "wwwroot/lib/particles.js/"
+    },
+    {
+      "library": "freewall@1.0.5",
+      "destination": "wwwroot/lib/freewall/"
     }
   ]
 }

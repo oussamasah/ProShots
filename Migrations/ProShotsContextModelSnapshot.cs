@@ -236,6 +236,210 @@ namespace ProShots.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("ProShots.Models.Event", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Sector")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("User")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Events");
+                });
+
+            modelBuilder.Entity("ProShots.Models.Media", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("Event")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Path")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Tag")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("User")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Medias");
+                });
+
+            modelBuilder.Entity("ProShots.Models.Sector", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Sectors");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2023, 6, 7, 9, 44, 17, 472, DateTimeKind.Local).AddTicks(8045),
+                            Name = "Wedding and Events"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedAt = new DateTime(2023, 6, 7, 9, 44, 17, 472, DateTimeKind.Local).AddTicks(8057),
+                            Name = "Portrait and Studio"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedAt = new DateTime(2023, 6, 7, 9, 44, 17, 472, DateTimeKind.Local).AddTicks(8057),
+                            Name = "Street Photography"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CreatedAt = new DateTime(2023, 6, 7, 9, 44, 17, 472, DateTimeKind.Local).AddTicks(8058),
+                            Name = "Fashion and Beauty"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CreatedAt = new DateTime(2023, 6, 7, 9, 44, 17, 472, DateTimeKind.Local).AddTicks(8059),
+                            Name = "Fine Art and Conceptual"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            CreatedAt = new DateTime(2023, 6, 7, 9, 44, 17, 472, DateTimeKind.Local).AddTicks(8059),
+                            Name = "Travel and Landscape"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            CreatedAt = new DateTime(2023, 6, 7, 9, 44, 17, 472, DateTimeKind.Local).AddTicks(8060),
+                            Name = "Photojournalism and Documentary"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            CreatedAt = new DateTime(2023, 6, 7, 9, 44, 17, 472, DateTimeKind.Local).AddTicks(8060),
+                            Name = "Sports and Action"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            CreatedAt = new DateTime(2023, 6, 7, 9, 44, 17, 472, DateTimeKind.Local).AddTicks(8061),
+                            Name = "Wildlife and Nature"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            CreatedAt = new DateTime(2023, 6, 7, 9, 44, 17, 472, DateTimeKind.Local).AddTicks(8061),
+                            Name = "Food and Culinary"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            CreatedAt = new DateTime(2023, 6, 7, 9, 44, 17, 472, DateTimeKind.Local).AddTicks(8062),
+                            Name = "Commercial and Advertising"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            CreatedAt = new DateTime(2023, 6, 7, 9, 44, 17, 472, DateTimeKind.Local).AddTicks(8062),
+                            Name = "Pet and Animal"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            CreatedAt = new DateTime(2023, 6, 7, 9, 44, 17, 472, DateTimeKind.Local).AddTicks(8063),
+                            Name = "Medical and Scientific"
+                        },
+                        new
+                        {
+                            Id = 14,
+                            CreatedAt = new DateTime(2023, 6, 7, 9, 44, 17, 472, DateTimeKind.Local).AddTicks(8063),
+                            Name = "Astrophotography"
+                        },
+                        new
+                        {
+                            Id = 15,
+                            CreatedAt = new DateTime(2023, 6, 7, 9, 44, 17, 472, DateTimeKind.Local).AddTicks(8064),
+                            Name = "Automotive"
+                        },
+                        new
+                        {
+                            Id = 16,
+                            CreatedAt = new DateTime(2023, 6, 7, 9, 44, 17, 472, DateTimeKind.Local).AddTicks(8064),
+                            Name = "Aerial"
+                        },
+                        new
+                        {
+                            Id = 17,
+                            CreatedAt = new DateTime(2023, 6, 7, 9, 44, 17, 472, DateTimeKind.Local).AddTicks(8064),
+                            Name = "Architectural and Interior"
+                        },
+                        new
+                        {
+                            Id = 18,
+                            CreatedAt = new DateTime(2023, 6, 7, 9, 44, 17, 472, DateTimeKind.Local).AddTicks(8065),
+                            Name = "Other"
+                        });
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)

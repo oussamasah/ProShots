@@ -1,0 +1,118 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+
+    Layout = "/Views/Shared/_DashLayout.cshtml";
+    @model ProShots.Models.ModelForm.MediaForm
+
+    var Img = ViewData["Img"] as Media;
+    var Lismedia = ViewData["Lismedia"] as IEnumerable<Media>;
+
+}
+@section Styles{
+    <style>
+        .preview {
+            background: url("/gallery/@Img.Path");
+            background-size: cover;
+            background-position: center center;
+            min-height: 450px;
+            width: 45%;
+        }
+
+        #MediaForm {
+            width: 50%;
+        }
+
+        .imgItem {
+            width: 120px;
+            height: 120px;
+            background-size: cover !important;
+            background-repeat: no-repeat !important;
+        }
+
+        .wrapperDetails {
+            background: rgb(34 40 49 / 85%);
+            width: 80%;
+        }
+
+        .SidebarDetails {
+            width: 18%;
+            margin-left: 10px;
+            border: 1px solid #b1b493;
+            padding: 10px;
+            border-radius: 7px;
+        }
+    </style>
+}
+<div class="row">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="mt-3 mb-3">Deatils Image </h1>
+        <a asp-controller="Gallery" role="button" asp-action="Index" class="btn retrun"><i class="bi-arrow-left me-2"></i>Return</a>
+
+
+    </div>
+    <div class="d-flex">
+        <div class="wrapperDetails">
+            <a asp-controller="Gallery" asp-action="Editimage" asp-route-id="@Model.Id" class="btn btn-lg action"><i class="bi bi-edit me-2"></i>Edit image</a>
+
+            <div class="d-flex justify-content-between align-items-center">
+                <form id="MediaForm" asp-action="Details" method="POST">
+                    <input asp-for="Id" type="hidden" autocomplete="Id" aria-required="true" />
+                    <input asp-for="Event" type="hidden" autocomplete="Id" aria-required="true" />
+
+                    <div class="form-group mb-3">
+                        <label asp-for="Title" class="form-label"></label>
+                        <input asp-for="Title" class="form-control" autocomplete="Title" aria-required="true" />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="Description" class="form-label"></label>
+                        <textarea asp-for="Description" class="form-control" autocomplete="Title" aria-required="true"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="Tag" class="form-label"></label>
+                        <textarea asp-for="Tag" class="form-control" autocomplete="Tag" aria-required="true"></textarea>
+                        <span asp-validation-for="Tag" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="State" class="form-label"></label>
+                        <select asp-for="State" class="form-control" autocomplete="Sector" aria-required="true">
+                            <option value="Public">Public</option>
+                            <option value="Private">Private</option>
+
+                        </select>
+                        <span asp-validation-for="Tag" class="text-danger"></span>
+                    </div>
+                    <button type="submit" class="btn btn-dark mb-3"><i class="bi bi-box-arrow-in-down me-2"></i>Edit image</button>
+
+                </form>
+                <div class="preview">
+                </div>
+            </div>
+        </div>
+        <div class="SidebarDetails">
+            <span class="MoreTitel d-block mb-3">More medias for this event</span>
+            <div class="d-flex flex-wrap justify-content-center align-items-center gap-2">
+                @{
+                    if (!Lismedia.Any())
+                    {
+                        <span>No more media in this event</span>
+                    }
+                    else
+                    {
+                      foreach (var item in Lismedia)
+                        {
+                            <a asp-action="Details" asp-route-id="@item.Id" class="imgItem" style="background:url('/gallery/@item.Path')">
+                            </a>
+                        }
+
+                }
+                }
+
+
+            </div>
+        </div>
+    </div>
+</div>
