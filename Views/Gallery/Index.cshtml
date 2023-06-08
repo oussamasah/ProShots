@@ -29,7 +29,7 @@
             width: 300px;
             height: 300px;
             background: #0D8;
-            border: 5px solid white#333;
+            border: 5px solid white;
             border-color: hsla(0, 0%, 0%, 0.7);
 
         }
@@ -119,6 +119,7 @@
 
     </hr>
     <div class="d-flex">
+        <div id="ListGallery" class="w-100">
         @{
 
             if (medias.Any())
@@ -145,6 +146,7 @@
                 <div class="w-100">No Media available add new event and uload your media!</div>
                 }
             }
+           </div>
         <div class="Sidebar p-3 ">
             <div class="Events Filter mb-5">
                 <span class="filter-title">Events</span>
@@ -154,7 +156,7 @@
                 {
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="d-flex">
-                            <input type="checkbox" class="form-check me-2" value="@item.Id" name="cat[]" id="@item.Id" />
+                            <input type="checkbox" class="form-check me-2" value="@item.Id" name="events" id="@item.Id" />
                             <label for="@item.Id" class="eventName">@item.Title</label>
                         </div>
                         <div class="action d-flex   justify-content-between align-items-center">
@@ -186,7 +188,7 @@
                         {
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="d-flex">
-                                    <input type="checkbox" class="form-check me-2" value="@item" name="tag[]" id="@item" />
+                                    <input type="checkbox" class="form-check me-2" value="@item" name="tags" id="@item" />
                                     <label for="@item" class="eventName">@item</label>
                                 </div>
                                 
@@ -201,6 +203,7 @@
 
 
             </div>
+            <button class="btn ps-5 pe-5 mt-3 d-block " id="filterBtn">Filter</button>
         </div>
     </div>
 
@@ -213,8 +216,32 @@
                     columnWidth: 100
                 }
             });
-            $("input[name='cat']").on("change", function () {
-                alert($("input[name='cat']").val())
+
+            $("#filterBtn").on("click",function(){
+                var events = $("input[type='checkbox'][name ='events']:checked").map(function(){
+                    return $(this).val();
+                }).get()
+                var tags = $("input[type='checkbox'][name='tags']:checked").map(function () {
+                    return $(this).val();
+                }).get()
+
+                $.ajax({
+                    url:"@Url.Action("Filter")",
+                    type:"POST",
+                    dataType:"html",
+                    data:{
+                        events: events,
+                        tags: tags
+                    },
+
+                    success:function(result){
+                        $("#ListGallery").html(result)
+                    },
+                    error:function(err){
+                        console.log(err)
+                    }
+                })
             })
+
         </script>
     }

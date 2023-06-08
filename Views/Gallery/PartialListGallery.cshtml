@@ -1,0 +1,29 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model List<Media>
+@{
+    if (Model.Any())
+    {
+        <div id="Gallery" class="grid">
+            @{
+                var i = 0;
+            }
+
+            @foreach (var item in Model)
+            {
+                <div class="grid-item @(i % 3 == 0 ? "" : i % 3 == 1 ? "grid-item--width2" : "grid-item--height2")" style="background:url('/gallery/@item.Path" alt="@item.Title')"> <div class="overlayItem"><a class="btn " asp-controller="Gallery" asp-route-id="@item.Id" asp-action="Details">Details</a></div></div>
+
+
+
+
+                i++;
+            }
+
+        </div>
+    }
+    else
+    {
+        <div class="w-100">No Media available add new event and uload your media!</div>
+    }
+}

@@ -8,6 +8,9 @@ using ProShots.Data;
 using ProShots.Models;
 using ProShots.Models.ModelForm;
 using System.Threading.Tasks;
+using System.Linq;
+using Newtonsoft.Json.Linq;
+using System;
 
 namespace ProShots.Controllers.Dashboard
 {
@@ -215,17 +218,19 @@ namespace ProShots.Controllers.Dashboard
 
         // POST: MediaController/Edit/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+
+        public async Task<ActionResult> Filter( int[] events, string[] tags)
         {
-            try
+            var medias = await _db.Medias.Where(m => m.User == _userManager.GetUserId(User)).Where(m => events.Contains(m.Event)).Where(m => tags.Contains<String>(m.Tag)).ToListAsync();
+
+            if (events.Length == 0 && tags.Length == 0)
             {
-                return RedirectToAction(nameof(Index));
+                medias = await _db.Medias.Where(m => m.User == _userManager.GetUserId(User)).ToListAsync();
+
             }
-            catch
-            {
-                return View();
-            }
+
+            return PartialView("PartialListGallery",medias);
+            
         }
 
         // GET: MediaController/Delete/5
