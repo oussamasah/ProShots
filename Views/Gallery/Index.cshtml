@@ -29,10 +29,15 @@
             width: 300px;
             height: 300px;
             background: #0D8;
-            border: 2px solid #333;
+            border: 5px solid white#333;
             border-color: hsla(0, 0%, 0%, 0.7);
+
         }
 
+        .grid-item {
+            background-size: cover !important;
+            background-repeat: no-repeat !important;
+        }
         .grid-item--width2 {
             width: 400px;
         }
@@ -114,10 +119,15 @@
 
     </hr>
     <div class="d-flex">
+        @{
+
+            if (medias.Any())
+            {
         <div id="Gallery" class="grid">
             @{
                 var i = 0;
             }
+ 
             @foreach (var item in medias)
             {
                 <div class="grid-item @(i % 3 == 0 ? "" : i % 3 == 1 ? "grid-item--width2" : "grid-item--height2")" style="background:url('/gallery/@item.Path" alt="@item.Title')"> <div class="overlayItem"><a class="btn " asp-controller="Gallery" asp-route-id="@item.Id" asp-action="Details">Details</a></div></div>
@@ -127,21 +137,20 @@
 
                 i++;
             }
+               
         </div>
+                }
+                else
+                {
+                <div class="w-100">No Media available add new event and uload your media!</div>
+                }
+            }
         <div class="Sidebar p-3 ">
             <div class="Events Filter mb-5">
                 <span class="filter-title">Events</span>
-                <div class="d-flex justify-content-between align-items-center">
-                    <div class="d-flex">
-                        <input type="checkbox" class="form-check me-2" name="cat" id="cat" />
-                        <label for="cat">Categorie 1</label>
-                    </div>
-                    <div class="action d-flex justify-content-between align-items-center">
-                        <i class="bi bi-trash "></i>
-                        <i class="bi bi-edit "></i>
-                    </div>
-                </div>
-                @foreach (var item in events)
+                  @{ if (events.Any())
+                {
+                           @foreach (var item in events)
                 {
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="d-flex">
@@ -154,6 +163,12 @@
                         </div>
                     </div>
                 }
+                    }
+                    else
+                    {
+                        <div>No event available</div>
+                    }
+                }
 
 
             </div>
@@ -164,7 +179,8 @@
                     var index = 0;
                 }
                 @{
-                    if (!tags.Any())
+                    
+                    if (tags.Any())
                     {
                         @foreach (var item in tags)
                         {
@@ -173,10 +189,7 @@
                                     <input type="checkbox" class="form-check me-2" value="@item" name="tag[]" id="@item" />
                                     <label for="@item" class="eventName">@item</label>
                                 </div>
-                                <div class="action d-flex   justify-content-between align-items-center">
-                                    <i class="bi bi-trash "></i>
-                                    <i class="bi bi-editor "></i>
-                                </div>
+                                
                             </div>
                         }
                     }

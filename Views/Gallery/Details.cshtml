@@ -11,6 +11,7 @@
 
 }
 @section Styles{
+    <link rel="stylesheet" href="~/lib/bootstrap-tagsinpu/bootstrap-tagsinput.css" />
     <style>
         .preview {
             background: url("/gallery/@Img.Path");
@@ -73,7 +74,7 @@
                     </div>
                     <div class="form-group mb-3">
                         <label asp-for="Tag" class="form-label"></label>
-                        <textarea asp-for="Tag" class="form-control" autocomplete="Tag" aria-required="true"></textarea>
+                        <input asp-for="Tag" class="form-control" autocomplete="Tag" aria-required="true"></input>
                         <span asp-validation-for="Tag" class="text-danger"></span>
                     </div>
                     <div class="form-group mb-3">
@@ -116,3 +117,13 @@
         </div>
     </div>
 </div>
+@section Scripts{
+    <script src="~/lib/bootstrap-tagsinput/bootstrap-tagsinput.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("input#Tag").tagsinput()
+           
+        })
+    </script>
+
+}
