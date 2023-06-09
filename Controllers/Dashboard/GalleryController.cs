@@ -96,7 +96,8 @@ namespace ProShots.Controllers.Dashboard
 
             foreach (var file in files)
             {
-                string fileNameWithPath = Path.Combine(path, file.FileName);
+                var name = Guid.NewGuid() + Path.GetExtension(file.FileName);
+                string fileNameWithPath = Path.Combine(path, name);
                 using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
                 {
                     file.CopyTo(stream);
@@ -105,7 +106,7 @@ namespace ProShots.Controllers.Dashboard
 
                 var media = new Media
                 {
-                    Path = fileuserpath+"/"+ file.FileName,
+                    Path = fileuserpath+"/"+ name,
                     Description = form.Description,
                     Event = categ.Id,
                     User = _userManager.GetUserId(User)
