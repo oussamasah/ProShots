@@ -8,6 +8,7 @@
 }
 
 @section Styles {
+
     <style>
         input#Images {
             width: 100%;
@@ -169,8 +170,10 @@
 
 @section Scripts{
     <partial name="_ValidationScriptsPartial" />
+
     <script>
         $(document).ready(function () {
+
             $("input#Images").on("change", function () {
                 appendList()
             })

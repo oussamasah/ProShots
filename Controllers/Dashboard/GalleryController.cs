@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -7,9 +8,13 @@ using ProShots.Data;
 using ProShots.Models;
 using ProShots.Models.ModelForm;
 using System.Threading.Tasks;
+using System.Linq;
+using Newtonsoft.Json.Linq;
+using System;
 
 namespace ProShots.Controllers.Dashboard
 {
+    [Authorize]
     public class GalleryController : Controller
     {
         private readonly UserManager<User> _userManager;
@@ -26,10 +31,18 @@ namespace ProShots.Controllers.Dashboard
         public async Task<ActionResult> Index()
         {
             var medias = await _db.Medias.Where(m => m.User == _userManager.GetUserId(User)).ToListAsync();
+
             var tag =   new List<string>();
             foreach (var item in medias)
             {
-                tag.Add(item.Tag);
+                var t = item.Tag;
+                List<string>? result = t?.Split(',').ToList();
+                foreach (var item1 in result)
+                {
+                    if(!item1.Equals(""))
+                         tag.Add(item1);
+                }
+               
             }
             tag = tag.Distinct().ToList();
             ViewData["Tags"] = tag;
@@ -105,8 +118,9 @@ namespace ProShots.Controllers.Dashboard
 
 
                 var media = new Media
-                {
-                    Path = fileuserpath+"/"+ name,
+                { 
+                    Title= form.Title,
+                    Path = fileuserpath+"/"+ file.FileName,
                     Description = form.Description,
                     Event = categ.Id,
                     User = _userManager.GetUserId(User)
@@ -121,7 +135,7 @@ namespace ProShots.Controllers.Dashboard
             return RedirectToAction("Index");
 
         }
-
+        [HttpGet]
         // GET: MediaController/Details/5
         public async Task<ActionResult> Details(Guid id)
         {
@@ -145,6 +159,30 @@ namespace ProShots.Controllers.Dashboard
             ViewData["img"] = media;
             ViewData["Lismedia"] = Lismedia;
             return View(modelView);
+        }
+        [HttpPost]
+        // GET: MediaController/Details/5
+        public async Task<ActionResult> Details(MediaForm modelform)
+        {
+            var media = await _db.Medias.FindAsync(modelform.Id);
+            if (media == null)
+            {
+                return NotFound();
+
+            }
+            var Lismedia = await _db.Medias.Where(m => m.Event == media.Event).Where(m=>m.Id != media.Id).ToListAsync();
+
+            var modelView = new MediaForm();
+
+        
+            media.Title = modelform.Title;
+            media.Description = modelform.Description;
+            media.Tag = modelform.Tag;
+            media.State = modelform.State;
+            _db.SaveChanges();
+
+      
+            return RedirectToAction("Index");
         }
         public async Task<ActionResult> Editimage(Guid id)
         {
@@ -181,17 +219,19 @@ namespace ProShots.Controllers.Dashboard
 
         // POST: MediaController/Edit/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+
+        public async Task<ActionResult> Filter( int[] events, string[] tags)
         {
-            try
+            var medias = await _db.Medias.Where(m => m.User == _userManager.GetUserId(User)).Where(m => events.Contains(m.Event)).Where(m => tags.Contains<String>(m.Tag)).ToListAsync();
+
+            if (events.Length == 0 && tags.Length == 0)
             {
-                return RedirectToAction(nameof(Index));
+                medias = await _db.Medias.Where(m => m.User == _userManager.GetUserId(User)).ToListAsync();
+
             }
-            catch
-            {
-                return View();
-            }
+
+            return PartialView("PartialListGallery",medias);
+            
         }
 
         // GET: MediaController/Delete/5

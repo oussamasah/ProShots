@@ -29,10 +29,15 @@
             width: 300px;
             height: 300px;
             background: #0D8;
-            border: 2px solid #333;
+            border: 5px solid white;
             border-color: hsla(0, 0%, 0%, 0.7);
+
         }
 
+        .grid-item {
+            background-size: cover !important;
+            background-repeat: no-repeat !important;
+        }
         .grid-item--width2 {
             width: 400px;
         }
@@ -114,10 +119,16 @@
 
     </hr>
     <div class="d-flex">
+        <div id="ListGallery" class="w-100">
+        @{
+
+            if (medias.Any())
+            {
         <div id="Gallery" class="grid">
             @{
                 var i = 0;
             }
+ 
             @foreach (var item in medias)
             {
                 <div class="grid-item @(i % 3 == 0 ? "" : i % 3 == 1 ? "grid-item--width2" : "grid-item--height2")" style="background:url('/gallery/@item.Path" alt="@item.Title')"> <div class="overlayItem"><a class="btn " asp-controller="Gallery" asp-route-id="@item.Id" asp-action="Details">Details</a></div></div>
@@ -127,25 +138,25 @@
 
                 i++;
             }
+               
         </div>
+                }
+                else
+                {
+                <div class="w-100">No Media available add new event and uload your media!</div>
+                }
+            }
+           </div>
         <div class="Sidebar p-3 ">
             <div class="Events Filter mb-5">
                 <span class="filter-title">Events</span>
-                <div class="d-flex justify-content-between align-items-center">
-                    <div class="d-flex">
-                        <input type="checkbox" class="form-check me-2" name="cat" id="cat" />
-                        <label for="cat">Categorie 1</label>
-                    </div>
-                    <div class="action d-flex justify-content-between align-items-center">
-                        <i class="bi bi-trash "></i>
-                        <i class="bi bi-edit "></i>
-                    </div>
-                </div>
-                @foreach (var item in events)
+                  @{ if (events.Any())
+                {
+                           @foreach (var item in events)
                 {
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="d-flex">
-                            <input type="checkbox" class="form-check me-2" value="@item.Id" name="cat[]" id="@item.Id" />
+                            <input type="checkbox" class="form-check me-2" value="@item.Id" name="events" id="@item.Id" />
                             <label for="@item.Id" class="eventName">@item.Title</label>
                         </div>
                         <div class="action d-flex   justify-content-between align-items-center">
@@ -153,6 +164,12 @@
                             <i class="bi bi-editor "></i>
                         </div>
                     </div>
+                }
+                    }
+                    else
+                    {
+                        <div>No event available</div>
+                    }
                 }
 
 
@@ -164,19 +181,17 @@
                     var index = 0;
                 }
                 @{
-                    if (!tags.Any())
+                    
+                    if (tags.Any())
                     {
                         @foreach (var item in tags)
                         {
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="d-flex">
-                                    <input type="checkbox" class="form-check me-2" value="@item" name="tag[]" id="@item" />
+                                    <input type="checkbox" class="form-check me-2" value="@item" name="tags" id="@item" />
                                     <label for="@item" class="eventName">@item</label>
                                 </div>
-                                <div class="action d-flex   justify-content-between align-items-center">
-                                    <i class="bi bi-trash "></i>
-                                    <i class="bi bi-editor "></i>
-                                </div>
+                                
                             </div>
                         }
                     }
@@ -188,6 +203,7 @@
 
 
             </div>
+            <button class="btn ps-5 pe-5 mt-3 d-block " id="filterBtn">Filter</button>
         </div>
     </div>
 
@@ -200,8 +216,32 @@
                     columnWidth: 100
                 }
             });
-            $("input[name='cat']").on("change", function () {
-                alert($("input[name='cat']").val())
+
+            $("#filterBtn").on("click",function(){
+                var events = $("input[type='checkbox'][name ='events']:checked").map(function(){
+                    return $(this).val();
+                }).get()
+                var tags = $("input[type='checkbox'][name='tags']:checked").map(function () {
+                    return $(this).val();
+                }).get()
+
+                $.ajax({
+                    url:"@Url.Action("Filter")",
+                    type:"POST",
+                    dataType:"html",
+                    data:{
+                        events: events,
+                        tags: tags
+                    },
+
+                    success:function(result){
+                        $("#ListGallery").html(result)
+                    },
+                    error:function(err){
+                        console.log(err)
+                    }
+                })
             })
+
         </script>
     }
