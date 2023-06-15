@@ -11,6 +11,9 @@ using System.Threading.Tasks;
 using System.Linq;
 using Newtonsoft.Json.Linq;
 using System;
+using System.IO;
+using System.Diagnostics;
+using System.Diagnostics.Metrics;
 
 namespace ProShots.Controllers.Dashboard
 {
@@ -63,6 +66,9 @@ namespace ProShots.Controllers.Dashboard
         [HttpPost]
          public async Task<ActionResult> Add(GalleryForm form)
         {
+     
+            
+           
             var sectors = await _db.Sectors.OrderBy(s => s.Id).ToListAsync();
             ViewData["Sectors"] = sectors;
 
@@ -73,7 +79,9 @@ namespace ProShots.Controllers.Dashboard
                 ModelState.AddModelError("Images", "Images are required");
                 return View(form);
             }
-             foreach (var file in files)
+         
+
+            foreach (var file in files)
               {
                     var allowedEx = new List<string> { ".jpg", ".png", ".jpeg" };
                     if (!allowedEx.Contains(Path.GetExtension(file.FileName).ToLower()))
@@ -102,7 +110,7 @@ namespace ProShots.Controllers.Dashboard
             _db.Events.Add(categ);
             _db.SaveChanges();
 
-            string fileuserpath = _userManager.GetUserName(User) + "/" + form.Title;
+            string fileuserpath = _userManager.GetUserName(User) + "/" + form.Title.Trim();
             string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/gallery/" + fileuserpath);
             if (!Directory.Exists(path))
                 Directory.CreateDirectory(path);
@@ -111,16 +119,43 @@ namespace ProShots.Controllers.Dashboard
             {
                 var name = Guid.NewGuid() + Path.GetExtension(file.FileName);
                 string fileNameWithPath = Path.Combine(path, name);
-                using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
-                {
-                    file.CopyTo(stream);
-                }
+                /* using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
+                 {
+                  await   file.CopyToAsync(stream);
+                 }*/
 
+                try
+                {
+                    using (var image = Image.Load(file.OpenReadStream()))
+                    {
+                        // Define the maximum width for the resized image
+                        int maxWidth = 1200;
+
+                        // Calculate the new dimensions while maintaining the aspect ratio
+                        int newWidth = image.Width > maxWidth ? maxWidth : image.Width;
+                        int newHeight = (int)((double)newWidth / image.Width * image.Height);
+
+                        // Resize the image while maintaining the aspect ratio
+                        image.Mutate(x => x.Resize(newWidth, newHeight));
+
+                        // Compress the image and save it
+                        image.Save(fileNameWithPath);
+                    }
+
+                }
+                catch (Exception e)
+
+                {
+                    Console.WriteLine(e.Message);
+                    return BadRequest();
+
+                }
+               
 
                 var media = new Media
                 { 
                     Title= form.Title,
-                    Path = fileuserpath+"/"+ file.FileName,
+                    Path = fileuserpath+"/"+ name,
                     Description = form.Description,
                     Event = categ.Id,
                     User = _userManager.GetUserId(User)
@@ -164,6 +199,7 @@ namespace ProShots.Controllers.Dashboard
         // GET: MediaController/Details/5
         public async Task<ActionResult> Details(MediaForm modelform)
         {
+
             var media = await _db.Medias.FindAsync(modelform.Id);
             if (media == null)
             {
@@ -171,6 +207,12 @@ namespace ProShots.Controllers.Dashboard
 
             }
             var Lismedia = await _db.Medias.Where(m => m.Event == media.Event).Where(m=>m.Id != media.Id).ToListAsync();
+            ViewData["Lismedia"] = Lismedia;
+              ViewData["img"] = media;
+            if (!ModelState.IsValid)
+            {
+                return View(modelform);
+            }
 
             var modelView = new MediaForm();
 
@@ -222,11 +264,23 @@ namespace ProShots.Controllers.Dashboard
 
         public async Task<ActionResult> Filter( int[] events, string[] tags)
         {
-            var medias = await _db.Medias.Where(m => m.User == _userManager.GetUserId(User)).Where(m => events.Contains(m.Event)).Where(m => tags.Contains<String>(m.Tag)).ToListAsync();
-
+            var medias = new List<Media>();
             if (events.Length == 0 && tags.Length == 0)
             {
                 medias = await _db.Medias.Where(m => m.User == _userManager.GetUserId(User)).ToListAsync();
+
+            }else if(events.Length > 0 && tags.Length == 0)
+            {
+                medias = await _db.Medias.Where(m => m.User == _userManager.GetUserId(User)).Where(m => events.Contains(m.Event)).ToListAsync();
+
+            }else if (tags.Length > 0 && events.Length == 0)
+            {
+                medias = await _db.Medias.Where(m => m.User == _userManager.GetUserId(User)).Where(m => tags.Contains<String>(m.Tag)).ToListAsync();
+
+            }
+            else
+            {
+                medias = await _db.Medias.Where(m => m.User == _userManager.GetUserId(User)).Where(m => events.Contains(m.Event)).Where(m => tags.Contains<String>(m.Tag)).ToListAsync();
 
             }
 
@@ -235,24 +289,82 @@ namespace ProShots.Controllers.Dashboard
         }
 
         // GET: MediaController/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> DeleteImg(Guid id)
         {
-            return View();
+            if(id == null)
+            {
+                return BadRequest();
+            }
+
+            var media = await _db.Medias.FindAsync(id);
+            if (media == null)
+            {
+                return NotFound();
+            }
+            
+            if(media.Path != null)
+            {
+                string exitFile = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/gallery/" + media.Path);
+                System.IO.File.Delete(exitFile);
+            }
+          var counts = await _db.Medias.Where(m => m.Event == media.Event).CountAsync();
+         
+            if (counts  == 1)
+            {
+                int eventid = media.Event;
+                var ev = await _db.Events.FindAsync(eventid);
+                if(ev != null)
+                {
+                    _db.Remove(ev);
+                    _db.SaveChanges();
+                }
+
+
+            }
+
+            _db.Remove(media);
+            _db.SaveChanges();
+
+       
+            return RedirectToAction(nameof(Index));
         }
 
-        // POST: MediaController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<ActionResult> Deleteevent(int id)
         {
-            try
+            if (id == null)
             {
-                return RedirectToAction(nameof(Index));
+                return BadRequest();
             }
-            catch
+
+            var eventss = await _db.Events.FindAsync(id);
+            if (eventss == null)
             {
-                return View();
+                return NotFound();
             }
+
+      
+            string fileuserpath = _userManager.GetUserName(User) + "/" + eventss.Title.Trim();
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/gallery/" + fileuserpath);
+            DirectoryInfo dir =  new DirectoryInfo(path);
+            foreach (FileInfo file in dir.GetFiles())
+            {
+                file.Delete();
+            }
+
+
+            var medias = await _db.Medias.Where(m => m.Event == eventss.Id).ToListAsync();
+            foreach (var item in medias)
+            {
+                _db.Remove(item);
+
+            }
+            _db.Remove(eventss);
+
+           
+            _db.SaveChanges();
+
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }

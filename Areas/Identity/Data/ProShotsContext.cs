@@ -15,6 +15,8 @@ public class ProShotsContext : IdentityDbContext<User>
     public DbSet<Sector> Sectors { get; set; }
     public DbSet<Event> Events { get; set; }
     public DbSet<Media> Medias { get; set; }
+    public DbSet<Post> Posts { get; set; }
+    public DbSet<Comment> Comments { get; set; }
     protected override void OnModelCreating(ModelBuilder builder)
 
       

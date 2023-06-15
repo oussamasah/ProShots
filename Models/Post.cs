@@ -14,14 +14,17 @@ namespace ProShots.Models
         public string Content { get; set; }
 
 
-        public string Thumbnail { get; set; }
+        public string Thumbnail { get; set; }= "/post_thumbnail.jpg";
 
         [Required] 
         public string Status { get;set; }
 
+        public int like { get; set; } = 0;
+        public int dislike { get; set; } = 0;
+
         [Required]
         [ForeignKey(nameof(User))]
-        public int User { get; set; }
+        public string User { get; set; }
 
         [Required]      
         public DateTime CreatedAt { get; set;}= DateTime.Now;

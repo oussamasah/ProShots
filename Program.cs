@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.EntityFrameworkCore;
 using ProShots.Areas.Identity.Data;
 using ProShots.Data;
@@ -14,6 +15,16 @@ builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfi
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+builder.Services.Configure<KestrelServerOptions>(option =>
+{
+    option.Limits.MaxRequestBodySize = 1073741824;
+});
+
+
+builder.Services.Configure<IISServerOptions>(option =>
+{
+    option.MaxRequestBodySize = 1073741824;
+});
 builder.Services.Configure<IdentityOptions>(option =>
 {
 

@@ -79,7 +79,7 @@
                     </div>
                     <div class="form-group mb-3">
                         <label asp-for="State" class="form-label"></label>
-                        <select asp-for="State" class="form-control" autocomplete="Sector" aria-required="true">
+                        <select asp-for="State" class="form-control" autocomplete="State" aria-required="true">
                             <option value="Public">Public</option>
                             <option value="Private">Private</option>
 
@@ -118,6 +118,8 @@
     </div>
 </div>
 @section Scripts{
+
+    <partial name="_ValidationScriptsPartial" />
     <script src="~/lib/bootstrap-tagsinput/bootstrap-tagsinput.min.js"></script>
     <script>
         $(document).ready(function () {

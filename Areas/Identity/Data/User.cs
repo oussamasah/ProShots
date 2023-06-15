@@ -19,6 +19,17 @@ public class User : IdentityUser
     [Column(TypeName = "nvarchar(100)")]
     public string LastName { get; set; }
 
+
+    [PersonalData]
+    [Display(Name = "Description")]
+
+    public string? Description { get; set; } = string.Empty;
+
+
+    [PersonalData]
+    [Display(Name = "Cover")]
+    public string Cover { get; set; }
+
     [PersonalData]
     [Display(Name = "Photo")]
     

@@ -1,0 +1,58 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div class="header-wrapper d-flex justify-content-end align-items-center gab-4 p-3">
+
+
+        <div class="dropdown ms-3">
+          <a class="btn btn-secondary dropdown-toggle dropdownMenuLink" href="#" role="button"  data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-envelope-fill position-relative"> 
+             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning">
+    5
+
+  </span>    
+            
+            </i>
+
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink" id="messagesNotif">
+                <li class="ps-3 pe-3 mb-2 text-center fw-bold">Messages</li>
+                <li><a class="dropdown-item" href="/Identity/Account/Manage"><i class="bi bi-person-lines-fill me-2"></i>Setting</a></li>
+
+           </ul>
+        </div>
+
+        <div class="dropdown ms-3">
+          <a class="btn btn-secondary dropdown-toggle dropdownMenuLink" href="#" role="button"  data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-bell-fill position-relative">
+                 <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning">
+   3
+ 
+  </span>
+
+            </i>
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <li><a class="dropdown-item" href="/Identity/Account/Manage"><i class="bi bi-person-lines-fill me-2"></i>Setting</a></li>
+
+           </ul>
+        </div>
+
+
+        <div class="dropdown ms-3">
+          <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-person-circle"></i>
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <li><a class="dropdown-item" href="/Identity/Account/Manage"><i class="bi bi-person-lines-fill me-2"></i>Setting</a></li>
+               <li class="nav-item">
+                    <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                        <button id="logout" type="submit" class="dropdown-item"><i class="bi bi-power me-2"></i>Logout</button>
+                    </form>
+                </li>
+           </ul>
+        </div>
+</div>

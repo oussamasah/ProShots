@@ -9,12 +9,15 @@ namespace ProShots.Models
         public int Id { get; set; }
 
         [ForeignKey(nameof(Comment))]
-        public int CammentId { get; set; } = 0;
+        public int CommentId { get; set; } = 0;
         [Required]
         public string Content { get; set; }
 
         [Required]
         public string Email { get; set; }
+
+        public int like { get; set; } = 0;
+        public int dislike { get; set; } = 0;
 
         [ForeignKey(nameof(Post))]
         public int Post { get; set; }

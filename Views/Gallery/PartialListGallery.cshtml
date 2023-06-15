@@ -12,8 +12,7 @@
 
             @foreach (var item in Model)
             {
-                <div class="grid-item @(i % 3 == 0 ? "" : i % 3 == 1 ? "grid-item--width2" : "grid-item--height2")" style="background:url('/gallery/@item.Path" alt="@item.Title')"> <div class="overlayItem"><a class="btn " asp-controller="Gallery" asp-route-id="@item.Id" asp-action="Details">Details</a></div></div>
-
+                <div class="grid-item lazy-bg @(i % 3 == 0 ? "" : i % 3 == 1 ? "grid-item--width2" : "grid-item--height2")" style="background:url('/gallery/@item.Path')"> <div class="overlayItem"><a class="btn " asp-controller="Gallery" asp-route-id="@item.Id" asp-action="Details"><i class="bi bi-pencil-square"></i></a><a class="btn " href="#" onclick='$("#mediaId").val("@item.Id")' class="deleteMedia" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i class="bi bi-trash"></i></a></div></div>
 
 
 
@@ -27,3 +26,4 @@
         <div class="w-100">No Media available add new event and uload your media!</div>
     }
 }
+

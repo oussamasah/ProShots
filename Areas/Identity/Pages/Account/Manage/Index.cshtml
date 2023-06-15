@@ -1,0 +1,61 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Profile";
+    ViewData["ActivePage"] = ManageNavPages.Index;
+    var user = ViewData["User"] as User;
+}
+
+
+<h3>@ViewData["Title"]</h3>
+<partial name="_StatusMessage" for="StatusMessage" />
+
+<form id="profile-form" method="post" enctype="multipart/form-data">
+<div class="row">
+    <div class="col-md-6">
+     
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group mb-2">
+                <label asp-for="Username" class="form-label"></label>
+                <input asp-for="Username" class="form-control" disabled />
+                
+            </div>
+            <div class="form-group mb-2 ">
+                <label asp-for="Input.PhoneNumber" class="form-label"></label>
+                <input asp-for="Input.PhoneNumber" class="form-control" />
+            
+                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group  mb-2">
+                <label asp-for="Input.Description" class="form-label"></label>
+                <textarea asp-for="Input.Description" class="form-control" style="min-height:300px;" ></textarea>
+              
+                <span asp-validation-for="Input.Description" class="text-danger"></span>
+            </div>
+           
+     
+    </div>
+                  <div class="col-md-6 col-sm-12">
+                    <div class="mb-3">
+                        <label asp-for="Input.Photo" class="drop-container" style="    height: 225px;">
+                            <span class="drop-title"><span class="bi bi-upload"></span>Drop Photo here</span>
+                            <input class="form-control" asp-for="Input.Photo"  accept="image/*" >
+                        </label>
+                        <span asp-validation-for="Input.Photo" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Input.Cover" class="drop-container" style="    height: 225px;">
+                            <span class="drop-title"><span class="bi bi-upload"></span>Drop Cover here</span>
+                            <input class="form-control" asp-for="Input.Cover"  accept="image/*" >
+                        </label>
+                        <span asp-validation-for="Input.Cover" class="text-danger"></span>
+                    </div>
+                </div>
+    <div class="text-end col-md-12" >
+         <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
+    </div>
+</div>
+   </form>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

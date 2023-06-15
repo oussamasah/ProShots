@@ -8,7 +8,7 @@ namespace ProShots.Models.ModelForm
         public string Title { get; set; }
         public string Description { get; set; } = String.Empty;
 
-        public string Tag { get; set; } = string.Empty;
+        public string Tag { get; set; } = "";
 
         public int Event { get; set; }
 

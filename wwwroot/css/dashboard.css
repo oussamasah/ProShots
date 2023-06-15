@@ -17,11 +17,12 @@ html {
     min-height: 100%;
 }
 
+
 body {
     margin-bottom: 60px;
     font-family: "Bad Script",sans-serif;
-    background: url(/img/dash_bg-min.webp) no-repeat;
-    backdrop-filter: blur(2);
+    background: rgb(34 40 49 / 85%) url(/img/dash_bg-min.webp) no-repeat;
+    background-blend-mode: multiply;
     background-size: cover;
     color: #EEEEEE;
     height: 93vh;
@@ -125,14 +126,22 @@ a.action {
     height: 100vh;
     background: #b1b493;
     color: #222831;
+    position: fixed;
 }
 .wrapper {
-    background: rgb(34 40 49 / 85%);
+    
     width: 85%;
+    margin-left: 15%;
 }
 .header-wrapper {
     background: #4F8A8B;
     height: 55px;
+    position: fixed;
+    width: 85%;
+    z-index: 9999;
+}
+.content-wrapper {
+    margin-top: 56px;
 }
 .logo {
     display: block;
@@ -192,4 +201,37 @@ a.nav-link.active, a.nav-link:hover {
     padding: 5px;
     border-bottom: 1px solid #4F8A8B;
     line-height: 20px;
+}
+input[type="file"] {
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    z-index: 10;
+}
+
+.drop-container {
+    position: relative;
+    height: 275px;
+    width: 100%;
+    padding: 0;
+    border-radius: 10px;
+    border: 2px dashed #b0b0b0;
+    color: #d9d9d9;
+    cursor: pointer;
+}
+
+span.drop-title {
+    display: flex;
+    position: absolute;
+    margin: 0 auto;
+    width: 100%;
+    text-align: center;
+    flex-direction: column;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    font-weight: bold;
+    z-index: 0;
+    color: #b1b493;
 }

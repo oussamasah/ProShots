@@ -1,0 +1,371 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    var posts = ViewData["Posts"] as IEnumerable<dynamic>;
+    var gallery = ViewData["Gallery"] as IEnumerable<dynamic>;
+}
+@section Styles{
+    <link href="
+https://cdn.jsdelivr.net/npm/star-rating-svg@3.5.0/src/css/star-rating-svg.min.css
+" rel="stylesheet">
+
+    <style>
+        .banner {
+            background-size: cover !important;
+            background-repeat: norepeate !important;
+            background-position: bottom !important;
+            height: 300px;
+            width: 100%;
+            border-radius: 7px;
+            border: 2px solid #b1b493;
+        }
+
+        .profileImg {
+            background-size: cover !important;
+            background-repeat: no-repeat !important;
+            background-position: center !important;
+            height: 150px;
+            width: 150px;
+            border-radius: 50%;
+            border: 2px solid #B1B493;
+        }
+
+        .container-content {
+            position: absolute;
+            bottom: -85px;
+            padding: 0px 100px;
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            align-items: end;
+        }
+
+        .profileInfo {
+            padding: 0px 20px;
+            gap: 20px;
+            font-weight: bold;
+        }
+
+        .nameProfile {
+            color: #B1B493;
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        .dataProfile {
+            font-size: 20px;
+        }
+
+        .container-content {
+            padding: 0px 50px;
+        }
+
+        .content-body {
+            margin-top: 150px;
+        }
+
+        .sidebar {
+            width: 45%;
+        }
+
+        .content {
+            width: 55%;
+            padding: 0px 20px;
+        }
+
+        .card-wrapper {
+            padding: 20px;
+            background: #363e4a;
+            border-radius: 7px;
+        }
+
+        .info {
+            font-size: 18px;
+            color: white;
+        }
+
+        .article {
+            padding: 20px;
+            background: #363e4a;
+            margin-bottom: 20px;
+            border-radius: 7px;
+        }
+    </style>
+}
+<div class="container">
+    <div class="banner d-flex position-relative jusity-content-start align-items-end" style="background:url('/profiles/Cover/@Model.Cover');">
+        <div class="container-content">
+            <div class="profileInfo d-flex align-items-end gab-3">
+                <div class="profileImg" style="background:url('/profiles/@Model.Photo')"></div>
+                <div class="profileName">
+                    <div class="nameProfile">@Model.FirstName @Model.LastName</div>
+                    <div class="dataProfile d-flex gap-3">
+                        <span class="d-flex gap-2 me-3"><i class="bi bi-postcard"></i>@posts.Count()</span>
+                        <span class="d-flex gap-2"><i class="bi bi-images"></i>@gallery.Count()</span>
+                        <div class="my-rating"></div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="actions d-flex gap-3">
+                <a href="#" class="btn action d-flex gap-2"><i class="bi bi-star-half"></i> Rating</a>
+                <a href="#" class="btn action d-flex gap-2"><i class="bi bi-envelope-fill"></i> Send message</a>
+                <a href="#" class="btn action d-flex gap-2"><i class="bi bi-calendar2-week"></i> Booking</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container content-body d-flex">
+    <div class="sidebar">
+        <div class="card-wrapper card-description">
+            <h2>Informations</h2>
+            <div class="desc">
+                <a href="tel:@Model.PhoneNumber" title="Phone" class="d-flex gap-3 text-light info"><i class="bi bi-phone-fill"></i> @Model.PhoneNumber</a>
+                <h3 class="mt-3">Description</h3>
+                <p>@Model.Description</p>
+            </div>
+        </div>
+
+    </div>
+    <div class="content">
+        @foreach (var post in posts)
+        {
+            <article class="article" id="article-@post.post.Id">
+                <img src="/Blog/@post.post.Thumbnail" alt="@post.post.Title" class="imgArticle w-100 mb-3" />
+                <h2>@post.post.Title</h2>
+                <p>@post.post.Content</p>
+                <div class="ArticleActions d-flex justify-content-between align-items-center">
+                    <div class="d-flex gap-4">
+
+                        <a href="javascript:0" onclick="Like(this,@post.post.Id);" class="likeBtn" ><i class="bi bi-hand-thumbs-up-fill me-2"></i> <span class="count">@post.post.like</span></a>
+                        <a href="javascript:0" onclick="Dislike(this,@post.post.Id);" class="dislikeBtn" onclick="Dislike(this,@post.post.Id);"  ><i class="bi bi-hand-thumbs-down-fill me-2"></i><span class="count">@post.post.dislike</span></a>
+                        <a href="#" class="commentBtn"><i class="bi bi-chat-left-dots-fill me-2"></i>@(post.comment == null ? 0 : post.comment.Count())</a>
+                    </div>
+                    <div class="d-flex gap-3">
+                        <a href="#" class="btn action">  Add Comment</a>
+                    </div>
+                </div>
+            </article>
+        }
+
+
+    </div>
+
+</div>
+@section Scripts{
+    <script src="
+https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js
+"></script>
+    <script src="
+https://cdn.jsdelivr.net/npm/star-rating-svg@3.5.0/dist/jquery.star-rating-svg.min.js
+"></script>
+    <script>
+        $(document).ready(function () {
+            $(".my-rating").starRating({
+                totalStars: 5,
+                initialRating: 2,
+                starShape: 'rounded',
+                starSize: 20,
+                emptyColor: 'lightgray',
+                hoverColor: '#B1B493',
+                activeColor: '#B1B493',
+                useGradient: false,
+                readOnly: true
+            });
+
+            var l = Cookies.get("like");
+            if(l != null && l != []){
+                List = JSON.parse(l);
+                console.log(List)
+                for (var i = 0; i < List.length; i++) {
+                    $("#article-" + List[i]).find(".likeBtn").css("color", "#4F8A8B")
+                }
+            }
+
+            var d = Cookies.get("dislike");
+            if (d != null && d != []) {
+                dList = JSON.parse(d);
+                console.log(dList)
+                for (var i = 0; i < dList.length; i++) {
+                    $("#article-" + dList[i]).find(".dislikeBtn").css("color", "#4F8A8B")
+                }
+            }
+        })
+
+
+
+        function Like(e, id) {
+
+            var l = Cookies.get("like");
+           
+          
+            var List = [];
+            if (l == null || l == []) {
+
+
+                List.push(id)
+                $.ajax({
+                    url: "@Url.Action("Like")",
+                    type: "POST",
+                    dataType: "html",
+                    data: {
+                        id: id,
+                        action: "+",
+
+                    },
+                    success: function (result) {
+                        $(e).css("color", "#4F8A8B");
+                        $(e).find("span.count").html(result);
+                    },
+                    error: function (err) {
+                        console.log(err)
+                    }
+                })
+            } else {
+                List = JSON.parse(l);
+                console.log(List)
+                if (List.indexOf(id) == -1) {
+                   
+            
+               
+
+                    List.push(id);
+                    $.ajax({
+                        url: "@Url.Action("Like")",
+                        type: "POST",
+                        dataType: "html",
+                        data: {
+                            id: id,
+                            action: "+",
+
+                        },
+                        success: function (result) {
+                            $(e).css("color", "#4F8A8B");
+                            $(e).find("span.count").html(result);
+                        },
+                        error: function (err) {
+                            console.log(err)
+                        }
+                    })
+                } else {
+                    const index = List.indexOf(id);
+                   List.splice(index, 1);
+                    $.ajax({
+                        url: "@Url.Action("Like")",
+                        type: "POST",
+                        dataType: "html",
+                        data: {
+                            id: id,
+                            action: "-",
+
+                        },
+                        success: function (result) {
+                            $(e).css("color", "#B1B493");
+                            $(e).find("span.count").html(result);
+                        },
+                        error: function (err) {
+                            console.log(err)
+                        }
+                    })
+
+                }
+              
+
+            }
+            var d = Cookies.get("dislike");
+            var dList = JSON.parse(d);
+            if (dList != null && dList.length > 0) {
+                var dindex = dList.indexOf(id);
+                if (dindex > -1) {
+                  Dislike($("#article-"+id+" .dislikeBtn")[0],id)
+                }
+            }
+            Cookies.set("like", JSON.stringify(List));
+        }
+
+        function Dislike(e, id) {
+
+            var l = Cookies.get("dislike");
+            var List = [];
+            if (l == null || l == []) {
+                List.push(id)
+                $.ajax({
+                    url: "@Url.Action("Dislike")",
+                    type: "POST",
+                    dataType: "html",
+                    data: {
+                        id: id,
+                        action: "+",
+
+                    },
+                    success: function (result) {
+                        $(e).css("color", "#4F8A8B");
+                        $(e).find("span.count").html(result);
+                    },
+                    error: function (err) {
+                        console.log(err)
+                    }
+                })
+            } else {
+                List = JSON.parse(l);
+                console.log(List)
+                if (List.indexOf(id) == -1) {
+                    List.push(id);
+                    $.ajax({
+                        url: "@Url.Action("Dislike")",
+                        type: "POST",
+                        dataType: "html",
+                        data: {
+                            id: id,
+                            action: "+",
+
+                        },
+                        success: function (result) {
+                            $(e).css("color", "#4F8A8B");
+                            $(e).find("span.count").html(result);
+                        },
+                        error: function (err) {
+                            console.log(err)
+                        }
+                    })
+                } else {
+                    const index = List.indexOf(id);
+                    List.splice(index, 1);
+                    $.ajax({
+                        url: "@Url.Action("Dislike")",
+                        type: "POST",
+                        dataType: "html",
+                        data: {
+                            id: id,
+                            action: "-",
+
+                        },
+                        success: function (result) {
+                            $(e).css("color", "#B1B493");
+                            $(e).find("span.count").html(result);
+                        },
+                        error: function (err) {
+                            console.log(err)
+                        }
+                    })
+
+                }
+
+
+            }
+            var d = Cookies.get("like");
+            var dList = JSON.parse(d);
+            if (dList != null && dList.length > 0) {
+                var dindex = dList.indexOf(id);
+                if (dindex > -1) {
+                    Like($("#article-" + id + " .likeBtn")[0], id)
+                }
+            }
+            Cookies.set("dislike", JSON.stringify(List));
+        }
+
+
+
+    </script>
+}

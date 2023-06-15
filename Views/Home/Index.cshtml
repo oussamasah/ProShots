@@ -1,8 +1,93 @@
-﻿@{
+﻿
+@{
     ViewData["Title"] = "Home Page";
+    var users = ViewData["Users"] as IEnumerable<dynamic>;
 }
+@section Styles{
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="/css/home.css" />
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+}
+<section class="Am-img-slider-container">
+ 
+    <div class="swiper blog-slider">
+        <div class="swiper-wrapper">
+            @foreach (var user in users)
+            {
+                <div class="swiper-slide">
+                    <div class="blog-slider__imgs">
+                        <img class="back-image  blog-slider__backimg" alt=""
+                             src="/profiles/Cover/@user.Cover" />
+                        <div class="movie-image-container">
+
+                            <img class="movie-image  blog-slider__img" alt=""
+                                 src="/profiles/@user.Photo" />
+                            <div class="overly">
+                                <a asp-action="Profile" asp-route-id="@user.Id" title="-3" class="detailsLink">
+                                    <i class="bi bi-eye-fill"></i>
+                                </a>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="blog-slider__content">
+                        <h2 class="blog-slider__title">
+                            @user.PhoneNumber
+                        </h2>
+                        <p class="blog-slider__text">
+
+                            @user.Description
+                        </p>
+                        <span class="blog-slider__rate">
+                            @user.FirstName       @user.LastName
+                        </span>
+                    </div>
+                </div>
+            }
+
+        </div>
+        <div class="swiper-pagination"></div>
+    </div>
+</section>
+@section Scripts{
+    <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+    <script>
+        var swiper = new Swiper(".blog-slider", {
+            loop: true,
+            slidesPerView: "1",
+            speed: 500,
+            effect: "coverflow",
+            coverflowEffect: {
+                slideShadows: false,
+            },
+            mousewheel: {
+                invert: false,
+            },
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: true,
+            },
+            breakpoints: {
+                0: {
+                    effect: "slide",
+                    centeredSlides: false,
+                },
+                768: {
+                    slidesPerView: "2",
+                    centeredSlides: true,
+                },
+                1200: {
+                    slidesPerView: "1",
+                    centeredSlides: true,
+                }
+            },
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+                type: "fraction"
+            },
+
+        });
+
+    </script>
+}

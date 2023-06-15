@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProShots.Data;
 
@@ -11,9 +12,11 @@ using ProShots.Data;
 namespace ProShots.Migrations
 {
     [DbContext(typeof(ProShotsContext))]
-    partial class ProShotsContextModelSnapshot : ModelSnapshot
+    [Migration("20230614093428_Initial 6")]
+    partial class Initial6
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -171,11 +174,8 @@ namespace ProShots.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Cover")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
@@ -418,109 +418,109 @@ namespace ProShots.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2023, 6, 14, 14, 23, 4, 771, DateTimeKind.Local).AddTicks(7934),
+                            CreatedAt = new DateTime(2023, 6, 14, 10, 34, 26, 40, DateTimeKind.Local).AddTicks(7901),
                             Name = "Wedding and Events"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2023, 6, 14, 14, 23, 4, 771, DateTimeKind.Local).AddTicks(7946),
+                            CreatedAt = new DateTime(2023, 6, 14, 10, 34, 26, 40, DateTimeKind.Local).AddTicks(7928),
                             Name = "Portrait and Studio"
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2023, 6, 14, 14, 23, 4, 771, DateTimeKind.Local).AddTicks(7947),
+                            CreatedAt = new DateTime(2023, 6, 14, 10, 34, 26, 40, DateTimeKind.Local).AddTicks(7929),
                             Name = "Street Photography"
                         },
                         new
                         {
                             Id = 4,
-                            CreatedAt = new DateTime(2023, 6, 14, 14, 23, 4, 771, DateTimeKind.Local).AddTicks(7948),
+                            CreatedAt = new DateTime(2023, 6, 14, 10, 34, 26, 40, DateTimeKind.Local).AddTicks(7930),
                             Name = "Fashion and Beauty"
                         },
                         new
                         {
                             Id = 5,
-                            CreatedAt = new DateTime(2023, 6, 14, 14, 23, 4, 771, DateTimeKind.Local).AddTicks(7949),
+                            CreatedAt = new DateTime(2023, 6, 14, 10, 34, 26, 40, DateTimeKind.Local).AddTicks(7930),
                             Name = "Fine Art and Conceptual"
                         },
                         new
                         {
                             Id = 6,
-                            CreatedAt = new DateTime(2023, 6, 14, 14, 23, 4, 771, DateTimeKind.Local).AddTicks(7949),
+                            CreatedAt = new DateTime(2023, 6, 14, 10, 34, 26, 40, DateTimeKind.Local).AddTicks(7931),
                             Name = "Travel and Landscape"
                         },
                         new
                         {
                             Id = 7,
-                            CreatedAt = new DateTime(2023, 6, 14, 14, 23, 4, 771, DateTimeKind.Local).AddTicks(7950),
+                            CreatedAt = new DateTime(2023, 6, 14, 10, 34, 26, 40, DateTimeKind.Local).AddTicks(7931),
                             Name = "Photojournalism and Documentary"
                         },
                         new
                         {
                             Id = 8,
-                            CreatedAt = new DateTime(2023, 6, 14, 14, 23, 4, 771, DateTimeKind.Local).AddTicks(7951),
+                            CreatedAt = new DateTime(2023, 6, 14, 10, 34, 26, 40, DateTimeKind.Local).AddTicks(7932),
                             Name = "Sports and Action"
                         },
                         new
                         {
                             Id = 9,
-                            CreatedAt = new DateTime(2023, 6, 14, 14, 23, 4, 771, DateTimeKind.Local).AddTicks(7952),
+                            CreatedAt = new DateTime(2023, 6, 14, 10, 34, 26, 40, DateTimeKind.Local).AddTicks(7932),
                             Name = "Wildlife and Nature"
                         },
                         new
                         {
                             Id = 10,
-                            CreatedAt = new DateTime(2023, 6, 14, 14, 23, 4, 771, DateTimeKind.Local).AddTicks(7952),
+                            CreatedAt = new DateTime(2023, 6, 14, 10, 34, 26, 40, DateTimeKind.Local).AddTicks(7933),
                             Name = "Food and Culinary"
                         },
                         new
                         {
                             Id = 11,
-                            CreatedAt = new DateTime(2023, 6, 14, 14, 23, 4, 771, DateTimeKind.Local).AddTicks(7953),
+                            CreatedAt = new DateTime(2023, 6, 14, 10, 34, 26, 40, DateTimeKind.Local).AddTicks(7998),
                             Name = "Commercial and Advertising"
                         },
                         new
                         {
                             Id = 12,
-                            CreatedAt = new DateTime(2023, 6, 14, 14, 23, 4, 771, DateTimeKind.Local).AddTicks(7954),
+                            CreatedAt = new DateTime(2023, 6, 14, 10, 34, 26, 40, DateTimeKind.Local).AddTicks(7999),
                             Name = "Pet and Animal"
                         },
                         new
                         {
                             Id = 13,
-                            CreatedAt = new DateTime(2023, 6, 14, 14, 23, 4, 771, DateTimeKind.Local).AddTicks(7954),
+                            CreatedAt = new DateTime(2023, 6, 14, 10, 34, 26, 40, DateTimeKind.Local).AddTicks(8000),
                             Name = "Medical and Scientific"
                         },
                         new
                         {
                             Id = 14,
-                            CreatedAt = new DateTime(2023, 6, 14, 14, 23, 4, 771, DateTimeKind.Local).AddTicks(7955),
+                            CreatedAt = new DateTime(2023, 6, 14, 10, 34, 26, 40, DateTimeKind.Local).AddTicks(8000),
                             Name = "Astrophotography"
                         },
                         new
                         {
                             Id = 15,
-                            CreatedAt = new DateTime(2023, 6, 14, 14, 23, 4, 771, DateTimeKind.Local).AddTicks(7956),
+                            CreatedAt = new DateTime(2023, 6, 14, 10, 34, 26, 40, DateTimeKind.Local).AddTicks(8001),
                             Name = "Automotive"
                         },
                         new
                         {
                             Id = 16,
-                            CreatedAt = new DateTime(2023, 6, 14, 14, 23, 4, 771, DateTimeKind.Local).AddTicks(7956),
+                            CreatedAt = new DateTime(2023, 6, 14, 10, 34, 26, 40, DateTimeKind.Local).AddTicks(8001),
                             Name = "Aerial"
                         },
                         new
                         {
                             Id = 17,
-                            CreatedAt = new DateTime(2023, 6, 14, 14, 23, 4, 771, DateTimeKind.Local).AddTicks(7957),
+                            CreatedAt = new DateTime(2023, 6, 14, 10, 34, 26, 40, DateTimeKind.Local).AddTicks(8002),
                             Name = "Architectural and Interior"
                         },
                         new
                         {
                             Id = 18,
-                            CreatedAt = new DateTime(2023, 6, 14, 14, 23, 4, 771, DateTimeKind.Local).AddTicks(7958),
+                            CreatedAt = new DateTime(2023, 6, 14, 10, 34, 26, 40, DateTimeKind.Local).AddTicks(8002),
                             Name = "Other"
                         });
                 });

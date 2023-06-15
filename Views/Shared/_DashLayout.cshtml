@@ -16,7 +16,30 @@
     <link rel="stylesheet" href="~/ProShots.styles.css" asp-append-version="true" />
     <link href="https://fonts.googleapis.com/css2?family=Bad+Script&family=Great+Vibes&display=swap" rel="stylesheet">
     @await RenderSectionAsync("Styles", required: false)
+<style>
+            <style>
+        a.dropdownMenuLink {
+    padding: 0px;
+    font-size: 20px;
+    line-height: 20px;
+}
+span.badge.rounded-pill {
+    font-size: 12px!important;
+    font-weight: 400!important;
+    display: flex!important;
+    justify-content: center!important;
+    align-items: center!important;
+    font-family: serif;
+    color: #b1b493;
+    background: #222831!important;
+}
 
+a.dropdown-toggle:after {
+    content:"";
+    display:none;
+}
+    </style>
+</style>
 </head>
 <body>
 
@@ -37,13 +60,16 @@
                 <li class="w-100 nav-item mb-1">
                     <a class="w-100 nav-link" asp-area="" asp-controller="Gallery" asp-action="Index" title="Gallery"><i class="bi bi-collection-play-fill me-2"></i> Media Gallery</a>
                 </li>
+                 <li class="w-100 nav-item mb-1">
+                    <a class="w-100 nav-link" asp-area="" asp-controller="Blog" asp-action="Index" title="Blog"><i class="bi bi-postcard-heart-fill me-2"></i> Blog posts</a>
+                </li>
 
             </ul>
         </div>
         <div class="wrapper ">
-            <div class="header-wrapper p-3">
-              
-            </div>
+         
+                <partial name="/Views/Shared/_DashboarHeaderPartial.cshtml" />
+         
             <div class="content-wrapper p-3">
                 <main role="main" class="pb-3">
                     
@@ -54,8 +80,9 @@
     </div>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+  <script src="~/js/site.js" asp-append-version="true"></script>
     <script>
+
         $(function () {
             const currentPage = location.pathname;
             console.log(currentPage)
