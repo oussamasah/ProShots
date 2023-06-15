@@ -274,8 +274,9 @@ https://cdn.jsdelivr.net/npm/star-rating-svg@3.5.0/dist/jquery.star-rating-svg.m
 
             }
             var d = Cookies.get("dislike");
-            var dList = JSON.parse(d);
-            if (dList != null && dList.length > 0) {
+          
+            if (d != null && d!= "[]" ) {
+                var dList = JSON.parse(d);
                 var dindex = dList.indexOf(id);
                 if (dindex > -1) {
                   Dislike($("#article-"+id+" .dislikeBtn")[0],id)
@@ -355,8 +356,8 @@ https://cdn.jsdelivr.net/npm/star-rating-svg@3.5.0/dist/jquery.star-rating-svg.m
 
             }
             var d = Cookies.get("like");
-            var dList = JSON.parse(d);
-            if (dList != null && dList.length > 0) {
+            if (d != null && d != "[]") {
+                var dList = JSON.parse(d);
                 var dindex = dList.indexOf(id);
                 if (dindex > -1) {
                     Like($("#article-" + id + " .likeBtn")[0], id)
