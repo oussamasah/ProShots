@@ -14,7 +14,7 @@
 - **Frontend**: ASP.NET Core MVC 
 - **Database**: SQL Server 
 - **Authentication**: ASP.NET Core Identity
-- **API**: RESTful APIs
+
 - **Other Tools**: Entity Framework Core for ORM
 
 ## Installation
